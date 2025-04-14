@@ -18,8 +18,9 @@
 User Signup/Login: ✅
 
 JWT authentication se secure login/signup.
-
 Password hashing with bcrypt.
+==============================================================
+
 Job Search:   ✅
 
 Basic job list dikhayi degi.
