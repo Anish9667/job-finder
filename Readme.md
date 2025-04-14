@@ -26,15 +26,15 @@ Job Search:   ✅
 Basic job list dikhayi degi.
 
 Location & skill-based filtering.
-
+============================================
 Apply for Jobs:  ✅
 
 Job seeker apply kar sakta hai.
-
+====================================================
 Profile Creation:
 
 Name, email, skills, experience, etc.
-
+===========================================
 ✅ Advanced Features (Big)
 
 Dynamic Filters:

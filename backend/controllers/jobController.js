@@ -1,5 +1,6 @@
 const Job = require('../models/Job');
 
+
  exports.createJob = async (req, res) => {
   try {
     const { title, company, description, location, skills, salary } = req.body;
@@ -25,22 +26,31 @@ const Job = require('../models/Job');
   }
 };
 
- exports.getAllJobs = async (req, res) => {
+exports.getAllJobs = async (req, res) => {
   try {
-    const { location, skill } = req.query;
+    const { skills, location, minSalary, experience } = req.query;
 
-   
     const query = {};
-    if (location) query.location = { $regex: location, $options: 'i' };
-    if (skill) query.skills = { $in: [skill] };
 
-  
-    const jobs = await Job.find(query).populate('postedBy', 'name email');
+    if (skills) {
+      query.skills = { $in: skills.split(',') };
+    }
 
-    res.status(200).json({
-      total: jobs.length,
-      jobs,
-    });
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    if (minSalary) {
+      query.salary = { $gte: Number(minSalary) };
+    }
+
+    if (experience) {
+      query.experience = experience;
+    }
+
+    const jobs = await Job.find(query).sort({ createdAt: -1 });
+
+    res.status(200).json({ count: jobs.length, jobs });
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch jobs', error: error.message });
   }
