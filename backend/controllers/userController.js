@@ -1,4 +1,23 @@
 const User = require('../models/User');
+ exports.uploadResume = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const resumeUrl = req.file.path;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { resumeUrl },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: 'Resume uploaded successfully!',
+      resumeUrl: updatedUser.resumeUrl,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Resume upload failed', error: error.message });
+  }
+};
 
 exports.getMyProfile = async (req, res) => {
   try {

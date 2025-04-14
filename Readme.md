@@ -44,7 +44,7 @@ Skills, salary range, experience, location ke basis par filter.
 Resume Upload:
 
 Cloudinary par resume upload karne ka option.
-
+=========================================
 Job Application History:
 
 Users apni past applications dekh sakte hain.
