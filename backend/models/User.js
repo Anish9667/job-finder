@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    appliedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Job',
+      }
+    ],
     avatar: {
       type: String,
       default: '',
