@@ -48,11 +48,11 @@ Cloudinary par resume upload karne ka option.
 Job Application History:
 
 Users apni past applications dekh sakte hain.
-
+==============================================
 User Profile Management:
 
 Users apna profile edit/delete kar sakte hain.
-
+=================================================================================
 Email Notifications:
 
 Job apply karne par email confirmation.
