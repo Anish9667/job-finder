@@ -58,7 +58,7 @@ Email Notifications:
 Job apply karne par email confirmation.
 
 Employer ko new applicant ki email notification.
-
+====================================================================================================
 🔥 ✅ 📌 2. 🔥 Admin Module (Admin Dashboard)
 ✅ Basic Features (Small)
 
@@ -73,7 +73,7 @@ Admin users & jobs ko create, read, update, delete kar sakta hai.
 View Users & Jobs:
 
 Admin panel me list dikhayi degi.
-
+========================================
 ✅ Advanced Features (Big)
 
 Role Management:
