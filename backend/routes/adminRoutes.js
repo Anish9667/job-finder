@@ -13,7 +13,9 @@ const {
 } = require("../controllers/adminController");
 
 const adminAuth = require("../middlewares/adminAuth");
-
+router.get("/dashboard", adminAuth, (req, res) => {
+  res.send("Welcome Admin");
+});
  router.get("/users", adminAuth, getAllUsers);
 router.delete("/users/:id", adminAuth, deleteUser);
 
@@ -21,7 +23,7 @@ router.delete("/users/:id", adminAuth, deleteUser);
 router.post("/jobs", adminAuth, createJob);
 router.put("/jobs/:id", adminAuth, updateJob);
 router.delete("/jobs/:id", adminAuth, deleteJob);
- router.post("/register", registerAdmin);
+ router.post("/registerAdmin", registerAdmin);
 
  router.post("/login", loginAdmin);
 

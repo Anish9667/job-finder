@@ -3,12 +3,12 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Job = require("../models/Job");
 
- exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find().select("-password");  
     res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to get users" });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users", error: error.message });
   }
 };
 
@@ -17,7 +17,7 @@ const Job = require("../models/Job");
       await User.findByIdAndDelete(req.params.id);
       res.status(200).json({ message: "User deleted" });
     } catch (err) {
-      console.error("Delete User Error: ", err); // <-- add this line
+      console.error("Delete User Error: ", err); 
       res.status(500).json({ message: "Error deleting user" });
     }
   };
