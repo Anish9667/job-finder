@@ -79,11 +79,11 @@ Admin panel me list dikhayi degi.
 Role Management:
 
 Admin roles assign kar sakta hai (User, Employer, Admin).
-
+====================================================================================
 Dashboard with Analytics:
 
 Chart.js se graphs display honge (Total jobs, applicants, users).
-
+=========================================================
 Export Data:
 
 Admin applicants & jobs ki CSV export kar sakta hai.

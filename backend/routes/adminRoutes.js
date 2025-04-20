@@ -10,13 +10,14 @@ const {
   createJob,
   updateJob,
   deleteJob,
+  getDashboardStats,
 } = require("../controllers/adminController");
 
 const adminAuth = require("../middlewares/adminAuth");
-router.get("/dashboard", adminAuth, (req, res) => {
-  res.send("Welcome Admin");
-});
- router.get("/users", adminAuth, getAllUsers);
+const checkRole = require("../middlewares/roleMiddleware");
+
+router.get("/dashboard", adminAuth, getDashboardStats);
+ router.get("/users", adminAuth, checkRole("admin"), getAllUsers);
 router.delete("/users/:id", adminAuth, deleteUser);
 
  router.get("/jobs", adminAuth, getAllJobs);

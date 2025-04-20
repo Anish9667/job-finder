@@ -2,7 +2,34 @@ const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Job = require("../models/Job");
+// ✅ Admin Dashboard Stats Controller
+exports.getDashboardStats = async (req, res) => {
+  try {
+    // 👉 Total number of users count karo
+    const totalUsers = await User.countDocuments();
 
+    // 👉 Total number of jobs count karo
+    const totalJobs = await Job.countDocuments();
+
+    // 👉 Total number of applications
+    const users = await User.find(); // sabhi users lelo
+    let totalApplications = 0;
+
+    // Har user ke appliedJobs count karo aur total me add karo
+    users.forEach((user) => {
+      totalApplications += user.appliedJobs.length;
+    });
+
+    // 👉 Sab result response me bhejo
+    res.status(200).json({
+      totalUsers,
+      totalJobs,
+      totalApplications,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching dashboard stats", error: error.message });
+  }
+};
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");  
