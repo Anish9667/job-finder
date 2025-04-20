@@ -40,7 +40,7 @@ Name, email, skills, experience, etc.
 Dynamic Filters:
 
 Skills, salary range, experience, location ke basis par filter.
-
+====================================================================
 Resume Upload:
 
 Cloudinary par resume upload karne ka option.
@@ -65,11 +65,11 @@ Employer ko new applicant ki email notification.
 Admin Login:
 
 Secure admin authentication (JWT).
-
+==============================================
 CRUD Operations:
 
 Admin users & jobs ko create, read, update, delete kar sakta hai.
-
+==================================================
 View Users & Jobs:
 
 Admin panel me list dikhayi degi.
@@ -91,10 +91,11 @@ Admin applicants & jobs ki CSV export kar sakta hai.
 Bulk Deletion & Updates:
 
 Admin multiple jobs ko delete ya update kar sakta hai.
-
+===============================================================
 Admin Notifications:
 
 New user/job creation par admin ko notification milega.
+==================================================
 
 🔥 ✅ 📌 3. 🌐 Frontend Features (React.js + TailwindCSS)
 ✅ Basic Features (Small)

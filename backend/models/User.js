@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,13 +20,13 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ['user', 'employer', 'admin'],
-      default: 'user',
+      enum: ["user", "employer", "admin"],
+      default: "user",
     },
 
     bio: {
       type: String,
-      default: '',
+      default: "",
     },
 
     skills: {
@@ -36,29 +36,29 @@ const userSchema = new mongoose.Schema(
 
     experience: {
       type: String,
-      default: '',
+      default: "",
     },
 
     location: {
       type: String,
-      default: '',
+      default: "",
     },
     resumeUrl: {
       type: String,
-      default: '',
+      default: "",
     },
     appliedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Job',
-      }
+        ref: "Job",
+      },
     ],
     avatar: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

@@ -2,38 +2,43 @@ const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Job = require("../models/Job");
-const { Parser } = require('json2csv');   
- 
+const { Parser } = require("json2csv");
+
 exports.bulkDeleteJobs = async (req, res) => {
   try {
-    const { jobIds } = req.body;  
+    const { jobIds } = req.body;
 
-     if (!Array.isArray(jobIds) || jobIds.length === 0) {
-      return res.status(400).json({ message: "Please provide job IDs to delete." });
+    if (!Array.isArray(jobIds) || jobIds.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Please provide job IDs to delete." });
     }
 
- 
     const result = await Job.deleteMany({ _id: { $in: jobIds } });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "No jobs found to delete." });
     }
 
-    res.status(200).json({ message: `${result.deletedCount} jobs deleted successfully.` });
+    res
+      .status(200)
+      .json({ message: `${result.deletedCount} jobs deleted successfully.` });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting jobs.", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting jobs.", error: error.message });
   }
 };
 exports.bulkUpdateJobs = async (req, res) => {
   try {
-    const { jobIds, updateFields } = req.body;  
+    const { jobIds, updateFields } = req.body;
 
- 
     if (!Array.isArray(jobIds) || jobIds.length === 0 || !updateFields) {
-      return res.status(400).json({ message: "Please provide job IDs and update fields." });
+      return res
+        .status(400)
+        .json({ message: "Please provide job IDs and update fields." });
     }
 
- 
     const result = await Job.updateMany(
       { _id: { $in: jobIds } },
       { $set: updateFields }
@@ -43,92 +48,99 @@ exports.bulkUpdateJobs = async (req, res) => {
       return res.status(404).json({ message: "No jobs found to update." });
     }
 
-    res.status(200).json({ message: `${result.nModified} jobs updated successfully.` });
+    res
+      .status(200)
+      .json({ message: `${result.nModified} jobs updated successfully.` });
   } catch (error) {
-    res.status(500).json({ message: "Error updating jobs.", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating jobs.", error: error.message });
   }
 };
 exports.exportUsers = async (req, res) => {
   try {
-    const users = await User.find();   
-    
-    const fields = ['name', 'email', 'role', 'appliedJobs'];   
-    const json2csvParser = new Parser({ fields });   
-    const csv = json2csvParser.parse(users);   
+    const users = await User.find();
 
-    res.header('Content-Type', 'text/csv');   
-    res.attachment('users.csv');   
-    res.send(csv);   
+    const fields = ["name", "email", "role", "appliedJobs"];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(users);
 
+    res.header("Content-Type", "text/csv");
+    res.attachment("users.csv");
+    res.send(csv);
   } catch (error) {
-    res.status(500).json({ message: 'Error exporting users', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error exporting users", error: error.message });
   }
 };
-
 
 exports.exportJobs = async (req, res) => {
   try {
-    const jobs = await Job.find();   
-    const fields = ['title', 'company', 'location', 'salary', 'applicants'];  
-    const json2csvParser = new Parser({ fields });  
-    const csv = json2csvParser.parse(jobs);   
+    const jobs = await Job.find();
+    const fields = ["title", "company", "location", "salary", "applicants"];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(jobs);
 
-    res.header('Content-Type', 'text/csv');  
-    res.attachment('jobs.csv');   
-    res.send(csv);   
-
+    res.header("Content-Type", "text/csv");
+    res.attachment("jobs.csv");
+    res.send(csv);
   } catch (error) {
-    res.status(500).json({ message: 'Error exporting jobs', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error exporting jobs", error: error.message });
   }
 };
 
- 
 exports.getDashboardStats = async (req, res) => {
   try {
-   
     const totalUsers = await User.countDocuments();
 
-   
     const totalJobs = await Job.countDocuments();
 
-   
-    const users = await User.find(); 
+    const users = await User.find();
     let totalApplications = 0;
 
-     users.forEach((user) => {
+    users.forEach((user) => {
       totalApplications += user.appliedJobs.length;
     });
 
-     res.status(200).json({
+    res.status(200).json({
       totalUsers,
       totalJobs,
       totalApplications,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching dashboard stats", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error fetching dashboard stats",
+        error: error.message,
+      });
   }
 };
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");  
+    const users = await User.find().select("-password");
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching users", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
   }
 };
 
- exports.deleteUser = async (req, res) => {
-    try {
-      await User.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: "User deleted" });
-    } catch (err) {
-      console.error("Delete User Error: ", err); 
-      res.status(500).json({ message: "Error deleting user" });
-    }
-  };
-  
+exports.deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "User deleted" });
+  } catch (err) {
+    console.error("Delete User Error: ", err);
+    res.status(500).json({ message: "Error deleting user" });
+  }
+};
 
- exports.getAllJobs = async (req, res) => {
+exports.getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find();
     res.status(200).json(jobs);
@@ -137,7 +149,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
- exports.createJob = async (req, res) => {
+exports.createJob = async (req, res) => {
   try {
     const job = await Job.create(req.body);
     res.status(201).json(job);
@@ -146,7 +158,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
- 
 exports.updateJob = async (req, res) => {
   try {
     const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
@@ -158,7 +169,6 @@ exports.updateJob = async (req, res) => {
   }
 };
 
- 
 exports.deleteJob = async (req, res) => {
   try {
     await Job.findByIdAndDelete(req.params.id);
@@ -168,13 +178,13 @@ exports.deleteJob = async (req, res) => {
   }
 };
 
- const generateToken = (id) => {
+const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
 
- exports.registerAdmin = async (req, res) => {
+exports.registerAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -190,7 +200,7 @@ exports.deleteJob = async (req, res) => {
   }
 };
 
- exports.loginAdmin = async (req, res) => {
+exports.loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 

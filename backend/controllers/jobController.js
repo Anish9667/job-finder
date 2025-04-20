@@ -1,28 +1,38 @@
-const Job = require('../models/Job');
+const Job = require("../models/Job");
+const sendEmail = require("../utils/sendEmail");
 
-
- exports.createJob = async (req, res) => {
+exports.createJob = async (req, res) => {
   try {
-    const { title, company, description, location, skills, salary } = req.body;
+    const { title, description, company, location, salary } = req.body;
+    const userId = req.user.id;
 
-     const newJob = new Job({
+    const newJob = await Job.create({
       title,
-      company,
       description,
+      company,
       location,
-      skills,
       salary,
-      postedBy: req.user.id,  
+      postedBy: userId,
     });
 
-     await newJob.save();
+    const adminMsg = `
+      <h2>New Job Posted</h2>
+      <p><strong>Title:</strong> ${newJob.title}</p>
+      <p><strong>Company:</strong> ${newJob.company}</p>
+      <p><strong>Location:</strong> ${newJob.location}</p>
+      <p><strong>Posted By User ID:</strong> ${userId}</p>
+    `;
+    await sendEmail(
+      process.env.ADMIN_EMAIL,
+      "New Job Posted on Job Finder",
+      adminMsg
+    );
 
-    res.status(201).json({
-      message: 'Job created successfully',
-      job: newJob,
-    });
+    res.status(201).json({ message: "Job created successfully", job: newJob });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to create job', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating job", error: error.message });
   }
 };
 
@@ -33,11 +43,11 @@ exports.getAllJobs = async (req, res) => {
     const query = {};
 
     if (skills) {
-      query.skills = { $in: skills.split(',') };
+      query.skills = { $in: skills.split(",") };
     }
 
     if (location) {
-      query.location = { $regex: location, $options: 'i' };
+      query.location = { $regex: location, $options: "i" };
     }
 
     if (minSalary) {
@@ -52,6 +62,8 @@ exports.getAllJobs = async (req, res) => {
 
     res.status(200).json({ count: jobs.length, jobs });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch jobs', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch jobs", error: error.message });
   }
 };

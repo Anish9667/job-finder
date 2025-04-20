@@ -5,24 +5,25 @@ const {
   updateProfile,
   uploadResume,
   getApplicationHistory,
-  applyForJob,  
+  applyForJob,
+  signupUser,
 } = require("../controllers/userController");
 
 const authenticate = require("../middlewares/authMiddleware");
 const upload = require("../middlewares/uploadMiddleware");
-
- router.get("/profile", authenticate, getMyProfile);
+router.post("/signup", signupUser);
+router.get("/profile", authenticate, getMyProfile);
 router.put("/update", authenticate, updateProfile);
 
- router.post(
+router.post(
   "/upload-resume",
   authenticate,
   upload.single("resume"),
   uploadResume
 );
 
- router.get("/my-applications", authenticate, getApplicationHistory);
+router.get("/my-applications", authenticate, getApplicationHistory);
 
- router.post("/jobs/apply", authenticate, applyForJob);  
+router.post("/jobs/apply", authenticate, applyForJob);
 
 module.exports = router;
