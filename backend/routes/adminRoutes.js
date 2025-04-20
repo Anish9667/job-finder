@@ -11,10 +11,16 @@ const {
   updateJob,
   deleteJob,
   getDashboardStats,
+  exportUsers, 
+  exportJobs,
 } = require("../controllers/adminController");
 
 const adminAuth = require("../middlewares/adminAuth");
 const checkRole = require("../middlewares/roleMiddleware");
+
+router.get('/export/users', adminAuth, exportUsers);
+
+ router.get('/export/jobs', adminAuth, exportJobs);
 
 router.get("/dashboard", adminAuth, getDashboardStats);
  router.get("/users", adminAuth, checkRole("admin"), getAllUsers);

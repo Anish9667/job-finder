@@ -87,7 +87,7 @@ Chart.js se graphs display honge (Total jobs, applicants, users).
 Export Data:
 
 Admin applicants & jobs ki CSV export kar sakta hai.
-
+=========================================================
 Bulk Deletion & Updates:
 
 Admin multiple jobs ko delete ya update kar sakta hai.

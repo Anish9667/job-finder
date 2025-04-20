@@ -2,26 +2,61 @@ const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Job = require("../models/Job");
-// ✅ Admin Dashboard Stats Controller
+const { Parser } = require('json2csv');   
+ 
+
+exports.exportUsers = async (req, res) => {
+  try {
+    const users = await User.find();   
+    
+    const fields = ['name', 'email', 'role', 'appliedJobs'];   
+    const json2csvParser = new Parser({ fields });   
+    const csv = json2csvParser.parse(users);   
+
+    res.header('Content-Type', 'text/csv');   
+    res.attachment('users.csv');   
+    res.send(csv);   
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error exporting users', error: error.message });
+  }
+};
+
+
+exports.exportJobs = async (req, res) => {
+  try {
+    const jobs = await Job.find();   
+    const fields = ['title', 'company', 'location', 'salary', 'applicants'];  
+    const json2csvParser = new Parser({ fields });  
+    const csv = json2csvParser.parse(jobs);   
+
+    res.header('Content-Type', 'text/csv');  
+    res.attachment('jobs.csv');   
+    res.send(csv);   
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error exporting jobs', error: error.message });
+  }
+};
+
+ 
 exports.getDashboardStats = async (req, res) => {
   try {
-    // 👉 Total number of users count karo
+   
     const totalUsers = await User.countDocuments();
 
-    // 👉 Total number of jobs count karo
+   
     const totalJobs = await Job.countDocuments();
 
-    // 👉 Total number of applications
-    const users = await User.find(); // sabhi users lelo
+   
+    const users = await User.find(); 
     let totalApplications = 0;
 
-    // Har user ke appliedJobs count karo aur total me add karo
-    users.forEach((user) => {
+     users.forEach((user) => {
       totalApplications += user.appliedJobs.length;
     });
 
-    // 👉 Sab result response me bhejo
-    res.status(200).json({
+     res.status(200).json({
       totalUsers,
       totalJobs,
       totalApplications,
