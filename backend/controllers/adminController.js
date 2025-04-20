@@ -4,7 +4,50 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const { Parser } = require('json2csv');   
  
+exports.bulkDeleteJobs = async (req, res) => {
+  try {
+    const { jobIds } = req.body;  
 
+     if (!Array.isArray(jobIds) || jobIds.length === 0) {
+      return res.status(400).json({ message: "Please provide job IDs to delete." });
+    }
+
+ 
+    const result = await Job.deleteMany({ _id: { $in: jobIds } });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "No jobs found to delete." });
+    }
+
+    res.status(200).json({ message: `${result.deletedCount} jobs deleted successfully.` });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting jobs.", error: error.message });
+  }
+};
+exports.bulkUpdateJobs = async (req, res) => {
+  try {
+    const { jobIds, updateFields } = req.body;  
+
+ 
+    if (!Array.isArray(jobIds) || jobIds.length === 0 || !updateFields) {
+      return res.status(400).json({ message: "Please provide job IDs and update fields." });
+    }
+
+ 
+    const result = await Job.updateMany(
+      { _id: { $in: jobIds } },
+      { $set: updateFields }
+    );
+
+    if (result.nModified === 0) {
+      return res.status(404).json({ message: "No jobs found to update." });
+    }
+
+    res.status(200).json({ message: `${result.nModified} jobs updated successfully.` });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating jobs.", error: error.message });
+  }
+};
 exports.exportUsers = async (req, res) => {
   try {
     const users = await User.find();   

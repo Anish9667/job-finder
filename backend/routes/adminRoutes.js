@@ -12,12 +12,16 @@ const {
   deleteJob,
   getDashboardStats,
   exportUsers, 
-  exportJobs,
+  exportJobs,bulkDeleteJobs, 
+  bulkUpdateJobs,
 } = require("../controllers/adminController");
 
 const adminAuth = require("../middlewares/adminAuth");
 const checkRole = require("../middlewares/roleMiddleware");
 
+
+router.delete("/jobs/bulk-delete", adminAuth, bulkDeleteJobs);
+router.put("/jobs/bulk-update", adminAuth, bulkUpdateJobs);
 router.get('/export/users', adminAuth, exportUsers);
 
  router.get('/export/jobs', adminAuth, exportJobs);
