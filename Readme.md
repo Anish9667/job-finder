@@ -40,7 +40,7 @@ Name, email, skills, experience, etc.
 Dynamic Filters:
 
 Skills, salary range, experience, location ke basis par filter.
-====================================================================
+==================================================================== 
 Resume Upload:
 
 Cloudinary par resume upload karne ka option.
